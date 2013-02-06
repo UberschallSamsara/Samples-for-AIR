@@ -23,14 +23,17 @@ package qnx.samples.starshipsettings.ui
 
 	public class WarpImage extends UIComponent
 	{
-		[Embed(source="../assets/images/Warp_Drive.png")]
+		[Embed(source="../../../../../assets/images/Warp_Drive.png")]
 		public var warpDriveOff : Class;
-		[Embed(source="../assets/images/Warp_Drive_Energy.png")]
+		[Embed(source="../../../../../assets/images/Warp_Drive_Energy.png")]
 		public var warpDriveOn : Class;
 		
 		private var _warpOff : Bitmap;
 		private var _warpOn : Bitmap;
-		private var _speed : Number = 50;
+		// Removing intialization value; 
+		// this line of code gets stomped by other code on launch
+		// private var _speed : Number = 50;
+		private var _speed : Number;
 		private var _ctr : Number = 0;
 		
 		private static const TWO_PI : Number = Math.PI * 2;

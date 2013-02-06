@@ -37,7 +37,7 @@ package qnx.samples.starshipsettings.views
 	 */
 	public class StarshipSettingsView extends Container
 	{
-		[Embed(source="../assets/images/Background.png")]
+		[Embed(source="../../../../../assets/images/Background.png")]
 		public var bgImage : Class;
 		private var _background : Image;
 		private var _controlContainer : Container;
@@ -47,6 +47,7 @@ package qnx.samples.starshipsettings.views
 		private var _warpSlider : Slider;
 		private var _scannerCheckbox : CheckBox;
 		private var _gravityToggle : ToggleSwitch;
+		private static const SLIDERINITVALUE: Number = 55;
 
 		public function StarshipSettingsView()
 		{
@@ -82,6 +83,7 @@ package qnx.samples.starshipsettings.views
 
 			_gravityToggle = createToggleSwitch();
 
+			checkFirstUse();
 			loadSettings();
 		}
 
@@ -145,7 +147,9 @@ package qnx.samples.starshipsettings.views
 			slider.addEventListener( SliderEvent.MOVE, onSliderChange );
 			slider.minimum = 10;
 			slider.maximum = 100;
-			slider.value = 55;
+			// Removing intialization; this line of code gets stomped 
+			// by other code on launch			
+			// slider.value = 55;
 			_controlContainer.addChild( slider );
 
 			return slider;
@@ -231,6 +235,20 @@ package qnx.samples.starshipsettings.views
 				_warpSlider.value = _warpImage.speed = so.data['warpSpeed'];
 				_scannerCheckbox.selected = so.data['scannerActive'];
 				_gravityToggle.selected = so.data['gravity'];
+			}
+		}
+		
+		private function checkFirstUse():void 
+		{
+
+			var so : SharedObject = SharedObject.getLocal( "starshipSettings" );
+			if (so.data['firstUseInitialized'] != true) {
+				trace("in checkFirstUse(), the starshipSettings SharedObject is not initialized");
+				so.data['warpSpeed'] = SLIDERINITVALUE;
+				so.data['scannerActive'] = false;
+				so.data['gravity'] = false;
+				so.data['firstUseInitialized'] = true;
+				so.flush();
 			}
 		}
 	}
